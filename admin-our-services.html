@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Our Services</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Oswald:wght@500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #0057b8;
+            --blue-dark: #003d82;
+            --orange: #f97316;
+            --text: #1a1a2e;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--blue-dark);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--orange);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background: var(--blue);
+            border-left: 4px solid var(--orange);
+        }
+
+        .nav-links li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--blue-dark);
+        }
+
+        .btn {
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ea6c0a;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-edit {
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .btn-edit:hover { background: var(--blue-dark); }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .service-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .service-icon {
+            font-size: 24px;
+            color: var(--orange);
+        }
+
+        .icon-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+        }
+        .icon-selector i {
+            font-size: 22px;
+            color: var(--blue-dark);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+        }
+        .icon-selector i:hover {
+            background: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .icon-selector i.selected {
+            border-color: var(--orange);
+            color: var(--orange);
+            background: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Krishna Admin</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="admin.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="admin-our-services.html" class="active"><i class="fas fa-tools"></i> Our Services</a></li>
+            <li><a href="admin-service-areas.html"><i class="fas fa-map-marker-alt"></i> Service Areas</a></li>
+            <li><a href="admin-reviews.html"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Manage Services</h1>
+        </div>
+
+        <div class="card">
+            <h3 id="formTitle">Add New Service</h3>
+            <form id="serviceForm" style="margin-top: 15px;">
+                <input type="hidden" id="editId" value="">
+                <div class="form-group">
+                    <label>Service Name</label>
+                    <input type="text" id="svcName" class="form-control" placeholder="E.g., Complete Plumbing" required>
+                </div>
+                <div class="form-group">
+                    <label>Select Icon</label>
+                    <input type="hidden" id="svcIcon" value="fas fa-wrench" required>
+                    <div class="icon-selector" id="iconSelector">
+                        <i class="fas fa-wrench selected" data-icon="fas fa-wrench" onclick="selectIcon(this)" title="Wrench"></i>
+                        <i class="fas fa-tint" data-icon="fas fa-tint" onclick="selectIcon(this)" title="Water Drop"></i>
+                        <i class="fas fa-shower" data-icon="fas fa-shower" onclick="selectIcon(this)" title="Shower"></i>
+                        <i class="fas fa-bath" data-icon="fas fa-bath" onclick="selectIcon(this)" title="Bath"></i>
+                        <i class="fas fa-toilet" data-icon="fas fa-toilet" onclick="selectIcon(this)" title="Toilet"></i>
+                        <i class="fas fa-sink" data-icon="fas fa-sink" onclick="selectIcon(this)" title="Sink"></i>
+                        <i class="fas fa-faucet-drip" data-icon="fas fa-faucet-drip" onclick="selectIcon(this)" title="Leaking Faucet"></i>
+                        <i class="fas fa-tools" data-icon="fas fa-tools" onclick="selectIcon(this)" title="Tools"></i>
+                        <i class="fas fa-house-chimney-crack" data-icon="fas fa-house-chimney-crack" onclick="selectIcon(this)" title="Pipe Leak"></i>
+                        <i class="fas fa-hammer" data-icon="fas fa-hammer" onclick="selectIcon(this)" title="Hammer"></i>
+                        <i class="fas fa-screwdriver" data-icon="fas fa-screwdriver" onclick="selectIcon(this)" title="Screwdriver"></i>
+                        <i class="fas fa-water" data-icon="fas fa-water" onclick="selectIcon(this)" title="Water"></i>
+                        <i class="fas fa-pump-medical" data-icon="fas fa-pump-medical" onclick="selectIcon(this)" title="Pump"></i>
+                        <i class="fas fa-fire-burner" data-icon="fas fa-fire-burner" onclick="selectIcon(this)" title="Geyser/Heater"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="svcDesc" class="form-control" rows="3" placeholder="Short description of the service" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Service Image (Optional)</label>
+                    <input type="file" id="svcImg" accept="image/*" class="form-control" style="padding: 6px;">
+                    <div id="imgPreview" style="margin-top: 10px; max-width: 150px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid var(--border);">
+                        <img id="imgPreviewSrc" src="" style="width: 100%; display: block;">
+                    </div>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Save Service</button>
+                <button type="button" class="btn" style="background:#64748b; margin-left:10px;" onclick="resetForm()">Cancel</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Active Services</h3>
+            <div class="services-list" id="servicesContainer">
+                <div style="padding: 15px; color: #64748b;">Loading services...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { collection, getDocs, addDoc, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        let currentServices = [];
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin.html"; 
+            } else {
+                loadServices();
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Sign out error", error);
+            });
+        });
+
+        async function loadServices() {
+            try {
+                const sSnap = await getDocs(collection(db, "services"));
+                const container = document.getElementById('servicesContainer');
+                
+                if (sSnap.empty) {
+                    container.innerHTML = '<div style="padding: 15px;">No services configured yet.</div>';
+                    currentServices = [];
+                    return;
+                }
+                
+                currentServices = [];
+                let html = '';
+                
+                sSnap.forEach(d => {
+                    const data = d.data();
+                    data.id = d.id;
+                    currentServices.push(data);
+                });
+
+                // Sort by default order if needed, but for now just map them out
+                currentServices.forEach(s => {
+                    html += `
+                        <div class="service-item">
+                            <div class="service-info">
+                                ${s.imgUrl ? `<img src="${s.imgUrl}" style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover;">` : `<i class="${s.icon} service-icon" style="width: 50px; text-align: center;"></i>`}
+                                <div>
+                                    <h4 style="color: var(--blue-dark); margin-bottom: 5px;">${s.name}</h4>
+                                    <p style="font-size: 13px; color: #64748b;">${s.desc}</p>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap: 8px;">
+                                <button class="btn-edit" onclick="editService('${s.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteService('${s.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch (e) {
+                console.error("Error loading services:", e);
+                document.getElementById('servicesContainer').innerHTML = '<div style="color: red; padding: 15px;">Error loading data.</div>';
+            }
+        }
+
+        let currentEditingImgUrl = '';
+
+        window.selectIcon = function(elementOrString) {
+            document.querySelectorAll('.icon-selector i').forEach(el => el.classList.remove('selected'));
+            
+            if (typeof elementOrString === 'string') {
+                const el = document.querySelector(`.icon-selector i[data-icon="${elementOrString}"]`);
+                if (el) el.classList.add('selected');
+                document.getElementById('svcIcon').value = elementOrString;
+            } else if (elementOrString) {
+                elementOrString.classList.add('selected');
+                document.getElementById('svcIcon').value = elementOrString.getAttribute('data-icon');
+            }
+        };
+
+        window.editService = function(id) {
+            const s = currentServices.find(x => x.id === id);
+            if (s) {
+                document.getElementById('editId').value = s.id;
+                document.getElementById('svcName').value = s.name;
+                document.getElementById('svcDesc').value = s.desc;
+                
+                currentEditingImgUrl = s.imgUrl || '';
+                
+                if (currentEditingImgUrl) {
+                    document.getElementById('imgPreview').style.display = 'block';
+                    document.getElementById('imgPreviewSrc').src = currentEditingImgUrl;
+                } else {
+                    document.getElementById('imgPreview').style.display = 'none';
+                    document.getElementById('imgPreviewSrc').src = '';
+                }
+                document.getElementById('svcImg').value = '';
+                
+                // Set icon value and visual selection using the unified function
+                selectIcon(s.icon);
+
+                document.getElementById('formTitle').textContent = 'Edit Service';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        window.resetForm = function() {
+            document.getElementById('editId').value = '';
+            document.getElementById('svcName').value = '';
+            document.getElementById('svcDesc').value = '';
+            document.getElementById('svcImg').value = '';
+            document.getElementById('imgPreview').style.display = 'none';
+            document.getElementById('imgPreviewSrc').src = '';
+            currentEditingImgUrl = '';
+            document.getElementById('formTitle').textContent = 'Add New Service';
+            
+            // reset visual selection to wrench
+            selectIcon('fas fa-wrench');
+        };
+
+        window.deleteService = async function(id) {
+            if (confirm('Delete this service permanently?')) {
+                try {
+                    await deleteDoc(doc(db, "services", id));
+                    loadServices();
+                } catch (e) {
+                    console.error("Delete error:", e);
+                    alert("Error deleting service.");
+                }
+            }
+        };
+
+        document.getElementById('svcImg').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imgPreview').style.display = 'block';
+                    document.getElementById('imgPreviewSrc').src = e.target.result;
+                    currentEditingImgUrl = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if(!currentEditingImgUrl) {
+                    document.getElementById('imgPreview').style.display = 'none';
+                    document.getElementById('imgPreviewSrc').src = '';
+                }
+            }
+        });
+
+        document.getElementById('serviceForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            const name = document.getElementById('svcName').value.trim();
+            const icon = document.getElementById('svcIcon').value.trim();
+            const desc = document.getElementById('svcDesc').value.trim();
+            const imgUrl = currentEditingImgUrl;
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            if (name && icon && desc) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                
+                try {
+                    const svcData = { name, icon, desc };
+                    
+                    if (imgUrl) {
+                        svcData.imgUrl = imgUrl;
+                    } else {
+                        svcData.imgUrl = null; // clear it if removed, but right now we only add/replace
+                    }
+                    if (id) {
+                        await setDoc(doc(db, "services", id), svcData);
+                    } else {
+                        await addDoc(collection(db, "services"), svcData);
+                    }
+                    window.resetForm();
+                    loadServices();
+                } catch (e) {
+                    console.error("Save error:", e);
+                    alert("Error saving service.");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Service';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

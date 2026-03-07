@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Service Areas</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Oswald:wght@500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #0057b8;
+            --blue-dark: #003d82;
+            --orange: #f97316;
+            --text: #1a1a2e;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--blue-dark);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--orange);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background: var(--blue);
+            border-left: 4px solid var(--orange);
+        }
+
+        .nav-links li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--blue-dark);
+        }
+
+        .btn {
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ea6c0a;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-control {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .area-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .area-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--blue-dark);
+        }
+
+        .area-name i {
+            color: var(--green);
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Krishna Admin</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="admin.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="admin-our-services.html"><i class="fas fa-tools"></i> Our Services</a></li>
+            <li><a href="admin-service-areas.html" class="active"><i class="fas fa-map-marker-alt"></i> Service Areas</a></li>
+            <li><a href="admin-reviews.html"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Manage Service Areas</h1>
+        </div>
+
+        <div class="card">
+            <h3>Add New Service Area</h3>
+            <p style="color: grey; margin-bottom: 15px; font-size: 14px;">Areas added here will be displayed with a tick
+                mark.</p>
+            <form id="addAreaForm" class="form-group">
+                <input type="text" id="areaName" class="form-control" placeholder="E.g., Miyapur, Kukatpally..."
+                    required>
+                <button type="submit" class="btn"><i class="fas fa-plus"></i> Add Area</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Active Service Areas</h3>
+            <div class="areas-grid" id="areasContainer">
+                <div style="padding: 15px; color: #64748b;">Loading active areas...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin.html"; 
+            } else {
+                loadAreas();
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Sign out error", error);
+            });
+        });
+
+        async function loadAreas() {
+            try {
+                const aSnap = await getDocs(collection(db, "areas"));
+                const container = document.getElementById('areasContainer');
+                if (aSnap.empty) {
+                    container.innerHTML = '<div style="padding: 15px;">No service areas configured yet.</div>';
+                    return;
+                }
+                
+                let html = '';
+                aSnap.forEach(d => {
+                    const a = d.data();
+                    html += `
+                        <div class="area-item">
+                            <div class="area-name"><i class="fas fa-check-circle"></i> ${a.name}</div>
+                            <button class="btn btn-danger" onclick="deleteArea('${d.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch (e) {
+                console.error("Error loading areas:", e);
+                document.getElementById('areasContainer').innerHTML = '<div style="color: red; padding: 15px;">Error loading data.</div>';
+            }
+        }
+
+        window.deleteArea = async function(id) {
+            if (confirm('Delete this area?')) {
+                try {
+                    await deleteDoc(doc(db, "areas", id));
+                    loadAreas();
+                } catch (e) {
+                    console.error("Delete error:", e);
+                    alert("Error deleting area.");
+                }
+            }
+        };
+
+        document.getElementById('addAreaForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const areaNameInput = document.getElementById('areaName');
+            const areaName = areaNameInput.value.trim();
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            if (areaName) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                try {
+                    await addDoc(collection(db, "areas"), { name: areaName, type: "Residential" });
+                    areaNameInput.value = '';
+                    loadAreas();
+                } catch (e) {
+                    console.error("Add error:", e);
+                    alert("Error adding area.");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Area';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Oswald:wght@500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #0057b8;
+            --blue-dark: #003d82;
+            --orange: #f97316;
+            --text: #1a1a2e;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--blue-dark);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--orange);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background: var(--blue);
+            border-left: 4px solid var(--orange);
+        }
+
+        .nav-links li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--blue-dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-info h3 {
+            font-size: 24px;
+            color: var(--blue-dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .recent-activity {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 20px;
+            color: var(--blue-dark);
+        }
+
+        .activity-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-details strong {
+            color: var(--blue-dark);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .activity-details span {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .activity-time {
+            color: var(--orange);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-live {
+            background: var(--green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-live:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loginContainer" style="display: none; width: 100vw; height: 100vh; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; background: var(--bg); z-index: 1000;">
+        <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 400px; text-align: center;">
+            <h2 style="margin-bottom: 10px; color: var(--blue-dark); font-family: 'Oswald', sans-serif;">⚙️ Admin Login</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Sign in with your authorized email and password</p>
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--text);">Email</label>
+                <input type="text" id="loginUser" placeholder="admin@example.com" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 5px; font-family: 'Nunito', sans-serif;">
+            </div>
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--text);">Password</label>
+                <input type="password" id="loginPass" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 5px; font-family: 'Nunito', sans-serif;">
+            </div>
+            <div id="loginError" style="color: #dc2626; margin-bottom: 15px; display: none; font-size: 14px;"></div>
+            <button id="loginBtn" style="background: var(--orange); color: white; border: none; padding: 12px 20px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; font-family: 'Nunito', sans-serif; transition: 0.3s;">🔓 Login</button>
+            <div style="margin-top: 15px;">
+                <a href="index.html" style="color: #64748b; text-decoration: none; font-size: 14px;">🔙 Return to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Krishna Admin</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="admin.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="admin-our-services.html"><i class="fas fa-tools"></i> Our Services</a></li>
+            <li><a href="admin-service-areas.html"><i class="fas fa-map-marker-alt"></i> Service Areas</a></li>
+            <li><a href="admin-reviews.html"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Welcome Back, Admin! 👋</h1>
+                <p style="color: #64748b; margin-top: 5px;">Here is what's happening today.</p>
+            </div>
+            <a target="_blank" href="index.html" class="btn-live"><i class="fas fa-external-link-alt"></i> View Live Site</a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                <div class="stat-info">
+                    <h3 id="statServices">6</h3>
+                    <p>Active Services</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="stat-info">
+                    <h3 id="statAreas">8</h3>
+                    <p>Service Areas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="stat-info">
+                    <h3>24/7</h3>
+                    <p>Emergency Status</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h3>📅 Recent Bookings</h3>
+            <div id="bookingsList" style="margin-top: 15px;">
+                <p style="color: #64748b; padding: 10px 0;">Loading bookings...</p>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { auth, db } from './firebase.js';
+        import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const loginContainer = document.getElementById('loginContainer');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                sidebar.style.display = 'none';
+                mainContent.style.display = 'none';
+                loginContainer.style.display = 'flex';
+            } else {
+                loginContainer.style.display = 'none';
+                sidebar.style.display = 'block';
+                mainContent.style.display = 'block';
+                loadAdminData();
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const email = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            if (!email || !pass) {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginError').innerText = '❌ Please enter email and password';
+                return;
+            }
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((result) => {
+                    document.getElementById('loginError').style.display = 'none';
+                }).catch((error) => {
+                    document.getElementById('loginError').style.display = 'block';
+                    document.getElementById('loginError').innerText = '❌ ' + error.message;
+                });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Sign out error", error);
+            });
+        });
+
+        window.deleteBooking = async function(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                try {
+                    await deleteDoc(doc(db, "bookings", id));
+                    loadAdminData(); // Refresh list
+                } catch (e) {
+                    console.error("Error deleting booking:", e);
+                    alert("Failed to delete booking.");
+                }
+            }
+        };
+
+        async function loadAdminData() {
+            try {
+                // Fetch stats sizes
+                const sSnap = await getDocs(collection(db, "services"));
+                document.getElementById('statServices').innerText = sSnap.size || 0;
+                
+                const aSnap = await getDocs(collection(db, "areas"));
+                document.getElementById('statAreas').innerText = aSnap.size || 0;
+
+                // Fetch bookings
+                const bSnap = await getDocs(collection(db, "bookings"));
+                const list = document.getElementById('bookingsList');
+                if (bSnap.empty) {
+                    list.innerHTML = '<p style="color: #64748b; padding: 10px 0;">No bookings found.</p>';
+                    return;
+                }
+
+                let bookingsHtml = '';
+                bSnap.forEach(d => {
+                    const b = d.data();
+                    bookingsHtml += `
+                    <div class="activity-item" style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px;">
+                            <strong>${b.name || 'Unknown'} — 📞 ${b.phone || 'N/A'}</strong>
+                            <span class="activity-time">${b.timestamp || ''}</span>
+                        </div>
+                        <div class="activity-details" style="width: 100%;">
+                            <span style="display:block; margin-bottom: 4px;"><strong>Service:</strong> ${b.service || 'N/A'}</span>
+                            <span style="display:block; margin-bottom: 4px;">📍 ${b.area || '—'} · 📅 ${b.date || 'Not specified'} · ⏰ ${b.time || 'Not specified'}</span>
+                            ${b.message ? `<span style="display:block; margin-top:6px;">💬 ${b.message}</span>` : ''}
+                        </div>
+                        <button class="btn-danger" style="margin-top: 10px; border:none; border-radius:4px; cursor:pointer;" onclick="deleteBooking('${d.id}')">🗑️ Delete</button>
+                    </div>`;
+                });
+                list.innerHTML = bookingsHtml;
+            } catch (e) {
+                console.error("Error loading admin data:", e);
+                document.getElementById('bookingsList').innerHTML = '<p style="color: red;">Error loading data.</p>';
+            }
+        }
+    </script>
+</body>
+
+</html>
