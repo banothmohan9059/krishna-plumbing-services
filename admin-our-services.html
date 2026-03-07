@@ -468,7 +468,7 @@
                         svcData.imgUrl = null; // clear it if removed, but right now we only add/replace
                     }
                     if (id) {
-                        await setDoc(doc(db, "services", id), svcData);
+                        await setDoc(doc(db, "services", id), svcData, { merge: true });
                     } else {
                         await addDoc(collection(db, "services"), svcData);
                     }
